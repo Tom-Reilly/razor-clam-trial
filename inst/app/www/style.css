@@ -10,21 +10,32 @@ h1, h2, h3 {
 }
 
 .navbar-default .navbar-brand{
-  color: #0A523E;
+  color: #1A5276;
 }
 
 .navbar {
-    border-bottom: 5px solid #0A9A6F;
+    border-bottom: 5px solid #1A5276;
 }
 
 .box, .well {
     position: relative;
     border-radius: 3px;
     background: #F4F4F4;
-    border-top: 5px solid #0A9A6F;
+    border-top: 5px solid #1A5276;
     margin-top: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 2px rgb(10 154 111 / 20%);
+    padding: 10px 20px 10px 20px;
+}
+
+.summary-box {
+    position: relative;
+    border-radius: 3px;
+    background: #FFFFFF;
+    border-top: 5px solid #1A5276;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 2px rgb(26 82 118 / 20%);
     padding: 10px 20px 10px 20px;
 }
 
@@ -37,11 +48,11 @@ h1, h2, h3 {
   object-fit: cover;
 }
 
-#siteTable tr {
+#siteTable tr, #glossaryTable tr {
   border-bottom: 1px solid #ddd;
 }
 
-#siteTable td, #siteTable th {
+#siteTable td, #siteTable th, #glossaryTable td, #glossaryTable th {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -54,3 +65,132 @@ h1, h2, h3 {
   color: white;
 }
 
+#lca-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sand-serif;
+    margin-top: 1.5rem; /* Add some space above for the caption*/
+}
+
+#lca-table caption {
+    caption-side: top;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: left;
+    color: #333;
+    padding-bottom: 10px;
+}
+
+#lca-table thead, #lca-table th {
+    background-colour: #f2f2f2;
+}
+
+#lca-table th, lca-table td {
+    padding: 12px;
+    border: 1px solid #dddddd;
+    text-align:center;
+}
+
+#lca-table .status-text {
+    font-weight: bold;
+}
+
+.row-success {background-color: #e8f5e9;}
+.row-success .status-text {color: #2e7d32;}
+
+.row-warning {background-color: #fffde7;}
+.row-warning .status-text {color: #f57f17;}
+
+.row-danger {background-color: #ffebee;}
+.row-danger .status-text {color: #c62828;}
+
+/* Desktop layout (side-by-side equal height */
+.shiny-fluid-row {
+    display: flex !important;
+    flex-wrap: wrap;
+}
+
+.shiny-fluid-row > div[class^='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-info-box {
+    display: flex;
+    flex-direction: row; /* Icon and text side-by-side by default */
+    align-items: center;
+    background-color: #1A5276;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    transition: all 0.2s ease-in-out;
+}
+
+.info-box-icon {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-right: 20px;
+    margin-bottom: 0px;
+    flex-shrink: 0;
+}
+
+.info-box-content {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+.info-box-dominant {
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    line-height: 1.2 !important;
+}
+
+.info-box-submissive {
+    font-size: 0.9rem !important;
+    color: #cbd5e1 !important;
+    font-weight: 400 !important;
+    margin-top: 6px !important;
+    line-height: 1.3 !important;
+    display: block !important;
+}
+
+/* Tablet layout (squeezed screens: stack icon on top of text */
+@media (max-width: 991px) and (min-width: 768px) {
+    .custom-info-box {
+        flex-direction: column; /* flip layout to vertical */
+        algin-items: center;
+        text-align: center;
+    }
+    .info-box-icon {
+        margin-right: 0px; /* remove right margin since it's on top */
+        margin-bottom: 12px; /* add bottom margin to space it from text */
+    }
+}
+
+@media (max-width: 767px) {
+    .shiny-fluid-row {
+        display: block !important;
+    }
+    .shiny-fluid-row > div[class^='col-'] {
+        margin-bottom: 15px;
+        display: block;
+    }
+    .custom-info-box {
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+    }
+    .info-box-icon {
+        margin-right: 20px;
+        margin-bottom: 0px;
+    }
+}
