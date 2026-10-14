@@ -1,0 +1,31 @@
+Package: RazorClamTrial
+Title: Razor Clam Trial App
+Version: 0.0.0.9000
+Authors@R: 
+    person("Marine", "Directorate", , "thomas.reilly@gov.scot", role = c("cre", "aut"))
+Description: Razor Clam Trial App.
+License: MIT + file LICENSE
+Depends: 
+    R (>= 2.10)
+Imports: 
+    config,
+    dplyr,
+    DT,
+    fst,
+    golem,
+    htmltools,
+    leaflet,
+    pkgload,
+    sf,
+    shiny,
+    shinycssloaders,
+    shinyWidgets,
+    tidyft
+Suggests: 
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+RoxygenNote: 7.3.2
