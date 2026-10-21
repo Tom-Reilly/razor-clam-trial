@@ -14,6 +14,16 @@ app_ui <- function(request) {
                tabPanel("Home", mod_Home_ui("Home_1")),
                tabPanel("Data Collection", mod_Data_Collection_ui("Data_Collection_1")),
                tabPanel("Data Exploration", mod_Data_Exploration_ui("Data_Exploration_1")),
+               navbarMenu("Summary Sheets",
+                          tabPanel("Broad Bay (Outer Hebrides)", mod_BroadBayAdvice_ui("BroadBayAdvice_1")),
+                          tabPanel("Firth of Clyde (West Coast SW)", mod_clydeAdvice_ui("ClydeAdvice_1")),
+                          tabPanel("Coll and Tiree (West Coast NW)", mod_CollAndTireeAdvice_ui("CollAndTireeAdvice_1")),
+                          tabPanel("Colonsay (West Coast NW)", mod_ColonsayAdvice_ui("ColonsayAdvice_1")),
+                          tabPanel("Firth of Forth (Firth of Forth)", mod_FirthOfForthAdvice_ui("FirthOfForthAdvice_1")),
+                          tabPanel("Gigha (West Coast SW)", mod_GighaAdvice_ui("GighaAdvice_1")),
+                          tabPanel("Sound of Sleat (West Coast NW)", mod_SoundOfSleatAdvice_ui("SoundOfSleatAdvice_1")),
+                          tabPanel("Wigtown Bay (West Coast SW)", mod_WigtownBayAdvice_ui("WigtownBayAdvice_1"))
+                          )
                tabPanel("Resources and References", mod_ResourcesReferences_ui("ResourcesReferences_1"))
     )
   )
