@@ -49,10 +49,9 @@ mod_CollAndTireeAdvice_ui <- function(id){
              div(class="advice-box",
                  id = "lpue",
                  width = 12,
-                 #div(class = "advice-box",
-                 #    width = 12,
-                 #     echarts4rOutput(ns("clydeLPUEPlot")))
-                 #img(src="img/annual_lpue_Firth of Clyde.jpeg", class="img-col")
+                 div(class = "advice-box",
+                     width = 12,
+                      echarts4rOutput(ns("colltireeLPUEPlot")))
              )
       ),
       column(width = 6,
@@ -95,6 +94,38 @@ mod_CollAndTireeAdvice_server <- function(id){
         e_dims(height='auto',width='auto')
 
     })
+
+    output$colltireeLPUEPlot <- renderEcharts4r({
+
+      colltireeLPUE = lpueData %>% filter(trial_area == "Coll and Tiree")
+
+    colltireeLPUE |>
+      e_charts(activity_date) |>
+      e_scatter(LPUE_kg_hr) |>
+      e_title(subtext = stringr::str_wrap("Figure 2. Landings Per Unit Effort (LPUE) in the Coll and Tiree trial area",60),
+              left = "center",
+              bottom = 0) |>
+      e_grid(containLabel = TRUE) |> # include labels when rescaling plot
+      e_tooltip(trigger="axis", formatter = htmlwidgets::JS(
+        "function(params) {
+        return('<strong>Date:</strong> ' + params[0].name);
+      }"
+      )) |>
+      e_legend(show=FALSE) |>
+      e_theme("wonderland") |>
+      e_dims(height = 'auto', width = 'auto') |>
+      e_y_axis(
+        name = "Landings per Unit Effort (Kg/hr)",
+        nameLocation = "center",
+        nameGap = 40
+      ) |>
+      e_x_axis(
+        name = "Date",
+        nameLocation = "center",
+        nameGap = 30
+      )
+    })
+
   })
 }
 
