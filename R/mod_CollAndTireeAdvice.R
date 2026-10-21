@@ -40,27 +40,31 @@ mod_CollAndTireeAdvice_ui <- function(id){
                  includeHTML(app_sys("collandtireeAdvice.html"))))
     ),
     fluidRow(
-      column(width = 6,
-             div(class="advice-box",
-                 id = "landings",
-                 width = 12,
-                 echarts4rOutput(ns("collandtireeLanPlot"))
-             ),
-             div(class="advice-box",
-                 id = "lpue",
-                 width = 12,
-                 div(class = "advice-box",
-                     width = 12,
-                      echarts4rOutput(ns("colltireeLPUEPlot")))
-             )
-      ),
-      column(width = 6,
-             div(class="advice-box",
-                 id = "effort",
-                 width = 12,
-                 img(src="img/col_tir_Trial Year 7.png", class="img-col")
-             )
+      column(width = 12,
+        div(class="advice-box",
+            id = "candt-landings",
+            width = 12,
+            h3("Total landings by year", style="color:#1A5276;"),
+            echarts4rOutput(ns("collandtireeLanPlot"))
+            HTML('<a href="#top">Back to top</a<'))
       )
+    ),
+    fluidRow(
+      column(width = 12,
+        div(class = "advice-box",
+            id = "candt-lpue",
+            width = 12,
+            h3("Landings per unit effort", style="color:#1A5276;"),
+            echarts4rOutput(ns("colltireeLPUEPlot")),
+            HTML('<a href="#top">Back to top</a<'))
+      )
+    ),
+      fluidRow(
+        div(id = "candt-effort",
+            leafletOutput(ns("colltireeEffortmap"),
+                          height = 600),
+            HTML('<a href="#top">Back to top</a<')
+        )
       )
   )
 }
@@ -125,6 +129,21 @@ mod_CollAndTireeAdvice_server <- function(id){
         nameGap = 30
       )
     })
+
+    output$colltireeEffortMap = renderLeaflet({
+      cols <- paletteer::paletteer_dynamic("cartography::harmo.pal", 12)
+      cols_bl <- colorRampPalette(cols)
+      prodAreas = st_read(app_sys("app/shapefiles/fss_classified_razor_areas_2026 - no_overlap.shp"), quiet = TRUE)
+      prodAreas = prodAreas %>% filter(trial_yr == 8, Status == "Classified")
+
+      clipped_polygons = st_read(app_sys("app/shapefiles/map_clipd_poly.shp"), quiet = TRUE)
+
+      leaflet() %>%
+        addProviderTiles("Stadia.AlidadeSmooth") %>%
+        addPolygons(data = prodAreas, weight = 1, fillOpacity = 0, color = "grey") %>%
+        addPolygons(data = clipped_polygons, weight = 0.5, fillOpacity = 0.8, color = ~map_col, label = ~lapply(labs, HTML)) %>% #cols_bl(pt_hors)
+        setView(lng=-4.7, lat=55.4, zoom=9)
+      })
 
   })
 }
