@@ -13,8 +13,6 @@
 #' @importFrom shinyWidgets dropdown animateOptions
 #' @importFrom leaflet addTiles addLegend
 #' @importFrom paletteer paletteer_dynamic
-#' @importFrom sf st_intersection st_union st_drop_geometry
-#' @importFrom dplyr arrange distinct select
 mod_ClydeAdvice_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -50,14 +48,14 @@ mod_ClydeAdvice_ui <- function(id){
     ),
     fluidRow(
     column(width = 12,
-    #       class = "col-12 col-md-6",
       div(class="advice-box",
           id = "clyde-landings",
           width = 12,
           h3("Total landings by year", style="color:#1A5276;"),
           echarts4rOutput(ns("clydeLanPlot")),
           HTML('<a href="#top">Back to top</a>')
-      ))),
+      )
+    )),
     fluidRow(
       column(12,
       div(class="advice-box",
@@ -68,25 +66,13 @@ mod_ClydeAdvice_ui <- function(id){
           HTML('<a href="#top">Back to top</a>')
       ))
     ),
-    #column(width = 12,
-    #       class = "col-12 col-md-6",
-    #    div(class="advice-box",
-    #        id = "clyde-effort",
-    #        width = 12,
-    #        tags$figure(
-    #        img(src="img/FoC_Trial Year 7.png", class="img-col"),
-    #        tags$figcaption("Figure 3. Firth of Clyde fishing effort map", style = "text-align:center;")
-    #        )
-    #  )
-    #)
-    #),
     fluidRow(
       div(id = "clyde-effort",
           leafletOutput(ns("clydeEffortMap"),
           height = 600),
-          HTML('<a href="#top">Back to top</a>')#,
-          #p("Figure 3. Estimated fishing effort (hours)")
-          )),
+          HTML('<a href="#top">Back to top</a>')
+          )
+    ),
     fluidRow(
       column(12,
       div(class="advice-box",
@@ -101,8 +87,7 @@ mod_ClydeAdvice_ui <- function(id){
                    )),
           includeHTML(app_sys("clydeAdviceLCA.html")),
           HTML('<a href="#top">Back to top</a>')
-      )
-      )
+      ))
     ),
     fluidRow(
       column(12,
@@ -110,7 +95,8 @@ mod_ClydeAdvice_ui <- function(id){
                  id = "clyde-lbi",
                  width=12,
                  includeHTML(app_sys("clydeAdviceLBI.html")),
-             HTML('<a href="#top">Back to top</a>')))
+             HTML('<a href="#top">Back to top</a>'))
+            )
     )
   )
 }
@@ -141,7 +127,7 @@ mod_ClydeAdvice_server <- function(id){
     ")) |>
       e_legend(show=FALSE) |>
       e_theme("wonderland") |>
-      e_dims(height='auto',width='auto') |>
+      e_dims(height = 'auto', width = 'auto') |>
       e_y_axis(
         name = "Landings (Kg)",
         nameLocation = "center",
@@ -174,7 +160,7 @@ mod_ClydeAdvice_server <- function(id){
       )) |>
       e_legend(show=FALSE) |>
       e_theme("wonderland") |>
-      e_dims(height='auto',width='auto') |>
+      e_dims(height = 'auto', width = 'auto') |>
       e_y_axis(
         name = "Landings per Unit Effort (Kg/hr)",
         nameLocation = "center",
@@ -189,29 +175,15 @@ mod_ClydeAdvice_server <- function(id){
     })
 
     output$clydeEffortMap = renderLeaflet({
-      #parse_fst("data/remData.fst") -> ft
-      #clydeREMData = ft[ft$Trial_year == 5 & ft$Trial_area == 9,]
       cols <- paletteer::paletteer_dynamic("cartography::harmo.pal", 12)
       cols_bl <- colorRampPalette(cols)
       prodAreas = st_read(app_sys("app/shapefiles/fss_classified_razor_areas_2026 - no_overlap.shp"), quiet = TRUE)
       prodAreas = prodAreas %>% filter(trial_yr == 8, Status == "Classified")
-      #prodAreas = st_union(prodAreas)
-      #c_squares = st_read(app_sys("app/shapefiles/hours_x_csquare.shp"), quiet = TRUE)
-      #clipped_polygons <- st_intersection(c_squares, prodAreas)
 
       clipped_polygons = st_read(app_sys("app/shapefiles/map_clipd_poly.shp"), quiet = TRUE)
 
-      #labs = sprintf(paste0("Trial Zone: ", c_squares$Zone,
-      #                      "<br/>Trial Area: ", c_squares$t_area,
-      #                      "<br/>ICES Rectangle: ", c_squares$stt_rct,
-      #                      "<br/>C-Square: ", c_squares$c_squar,
-      #                      "<br/>Effort (hours): ", c_squares$pt_hors
-      #)) %>%
-      #  lapply(htmltools::HTML)
-
       leaflet() %>%
         addProviderTiles("Stadia.AlidadeSmooth") %>%
-        #addTiles() %>%
         addPolygons(data = prodAreas, weight = 1, fillOpacity = 0, color = "grey") %>%
         addPolygons(data = clipped_polygons, weight = 0.5, fillOpacity = 0.8, color = ~map_col, label = ~lapply(labs, HTML)) %>% #cols_bl(pt_hors)
         setView(lng=-4.7, lat=55.4, zoom=9)
