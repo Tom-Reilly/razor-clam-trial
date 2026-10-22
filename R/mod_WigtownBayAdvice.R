@@ -76,7 +76,7 @@ mod_WigtownBayAdvice_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    output$wigtownbayLanPlot <- renderEcharts4r({
+    output$wigtownLanPlot <- renderEcharts4r({
 
       wigtownbayLan = read_fst("extdata/wigtownbayLandings.fst")
 
@@ -99,6 +99,52 @@ mod_WigtownBayAdvice_server <- function(id){
 
     })
 
+output$wigtownLPUEPlot <- renderEcharts4r({
+
+      wigtownLPUE = lpueData %>% filter(trial_area == "Wigtown Bay")
+
+    wigtownLPUE |>
+      e_charts(activity_date) |>
+      e_scatter(LPUE_kg_hr) |>
+      e_title(subtext = stringr::str_wrap("Figure 2. Landings Per Unit Effort (LPUE) in the Wigtown Bay trial area",60),
+              left = "center",
+              bottom = 0) |>
+      e_grid(containLabel = TRUE) |> # include labels when rescaling plot
+      e_tooltip(trigger="axis", formatter = htmlwidgets::JS(
+        "function(params) {
+        return('<strong>Date:</strong> ' + params[0].name);
+      }"
+      )) |>
+      e_legend(show=FALSE) |>
+      e_theme("wonderland") |>
+      e_dims(height = 'auto', width = 'auto') |>
+      e_y_axis(
+        name = "Landings per Unit Effort (Kg/hr)",
+        nameLocation = "center",
+        nameGap = 40
+      ) |>
+      e_x_axis(
+        name = "Date",
+        nameLocation = "center",
+        nameGap = 30
+      )
+
+    })
+
+    output$wigtownEffortMap = renderLeaflet({
+      cols <- paletteer::paletteer_dynamic("cartography::harmo.pal", 12)
+      cols_bl <- colorRampPalette(cols)
+      prodAreas = st_read(app_sys("app/shapefiles/fss_classified_razor_areas_2026 - no_overlap.shp"), quiet = TRUE)
+      prodAreas = prodAreas %>% filter(trial_yr == 8, Status == "Classified")
+
+      clipped_polygons = st_read(app_sys("app/shapefiles/map_clipd_poly.shp"), quiet = TRUE)
+
+      leaflet() %>%
+        addProviderTiles("Stadia.AlidadeSmooth") %>%
+        addPolygons(data = prodAreas, weight = 1, fillOpacity = 0, color = "grey") %>%
+        addPolygons(data = clipped_polygons, weight = 0.5, fillOpacity = 0.8, color = ~map_col, label = ~lapply(labs, HTML)) %>% #cols_bl(pt_hors)
+        setView(lng=-4.7, lat=55.4, zoom=9)
+      })
 
   })
 }
