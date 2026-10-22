@@ -132,6 +132,20 @@ mod_ColonsayAdvice_server <- function(id){
       )
     })
     
+    output$colonsayEffortMap = renderLeaflet({
+      cols <- paletteer::paletteer_dynamic("cartography::harmo.pal", 12)
+      cols_bl <- colorRampPalette(cols)
+      prodAreas = st_read(app_sys("app/shapefiles/fss_classified_razor_areas_2026 - no_overlap.shp"), quiet = TRUE)
+      prodAreas = prodAreas %>% filter(trial_yr == 8, Status == "Classified")
+
+      clipped_polygons = st_read(app_sys("app/shapefiles/map_clipd_poly.shp"), quiet = TRUE)
+
+      leaflet() %>%
+        addProviderTiles("Stadia.AlidadeSmooth") %>%
+        addPolygons(data = prodAreas, weight = 1, fillOpacity = 0, color = "grey") %>%
+        addPolygons(data = clipped_polygons, weight = 0.5, fillOpacity = 0.8, color = ~map_col, label = ~lapply(labs, HTML)) %>% #cols_bl(pt_hors)
+        setView(lng=-4.7, lat=55.4, zoom=9)
+    })
   })
 }
 
