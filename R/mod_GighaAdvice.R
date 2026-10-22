@@ -40,27 +40,32 @@ mod_GighaAdvice_ui <- function(id){
                  includeHTML(app_sys("gighaAdvice.html"))))
     ),
     fluidRow(
-      column(width = 6,
-             div(class="advice-box",
-                 id = "landings",
-                 width = 12,
-                 echarts4rOutput(ns("gighaLanPlot"))
-             ),
-             div(class="advice-box",
-                 id = "lpue",
-                 width = 12,
-                 #div(class = "advice-box",
-                 #    width = 12,
-                 #     echarts4rOutput(ns("clydeLPUEPlot")))
-                 #img(src="img/annual_lpue_Firth of Clyde.jpeg", class="img-col")
-             )
-      ),
-      column(width = 6,
-             div(class="advice-box",
-                 id = "effort",
-                 width = 12,
-                 img(src="img/gigha_Trial Year 7.png", class="img-col")
-             )
+      column(width = 12,
+        div(class="advice-box",
+            id = "gigha-landings",
+            width = 12,
+            h3("Total landings by year", style="color:#1A5276"),
+            echarts4rOutput(ns("gighaLanPlot")),
+            HTML('<a href="#top">Back to top</a>')
+        )
+      )
+    ),
+    fluidRow(
+      column(width = 12,
+        div(class="advice-box",
+            id = "gigha-lpue",
+            width = 12,
+            h3("Landings per unit effort", style="color:#1A5276"),
+            echarts4rOutput(ns("gighaLPUEPlot")),
+            HTML('<a href="#top">Back to top</a>')
+        )
+      )
+    ),
+    fluidRow(
+      div(id = "gigha-effort",
+          leafletOutput(ns("gighaEffortMap"),
+                       height = 600),
+          HTML('<a href="#top">Back to top</a>')
       )
     )
   )
