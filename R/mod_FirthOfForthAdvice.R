@@ -69,6 +69,33 @@ mod_FirthOfForthAdvice_ui <- function(id){
             HTML('<a href="#top">Back to top</a>')
         )
       )
+    ),
+    fluidRow(
+      column(12,
+        div(class="advice-box",
+            id = "fof-lca",
+            width = 12,
+            dropdown(includeHTML(app_sys("glossaryTable.html")),
+                     style = "fill", icon = icon("info"),
+                     status = "success", width = "90%",
+                     animate = animateOptions(
+                               enter = "fadeInLeftBig",
+                               exit = "fadeOutRightBig"
+                     )),
+            includeHTML(app_sys("clydeAdviceLCA.html")),
+            HTML('<a href="#top">Back to top</a>')
+      )
+    )
+  ),
+    fluidRow(
+      column(12,
+        div(class = "advice-box",
+            id = "fof-lbi",
+            width=12,
+            includeHTML(app_sys("clydeAdviceLBI.html")),
+            HTML('<a href="#top">Back to top</a>')
+        )
+      )
     )
   )
 }
