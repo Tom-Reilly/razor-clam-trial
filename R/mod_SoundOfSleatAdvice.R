@@ -45,7 +45,7 @@ mod_SoundOfSleatAdvice_ui <- function(id){
             id = "sos-landings",
             width = 12,
             h3("Total landings by year", style="color:#1A5276;"),
-            echarts4rOutput(ns("soundofsleatLanPlot")),
+            echarts4rOutput(ns("sosLanPlot")),
             HTML('<a href="#top">Back to top</a>')
         )
       )
@@ -78,7 +78,7 @@ mod_SoundOfSleatAdvice_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    output$soundofsleatLanPlot <- renderEcharts4r({
+    output$sosLanPlot <- renderEcharts4r({
 
       soundofsleatLan = read_fst("extdata/soundofsleatLandings.fst")
 
