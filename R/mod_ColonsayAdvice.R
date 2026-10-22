@@ -56,14 +56,14 @@ mod_ColonsayAdvice_ui <- function(id){
             id = "csay-lpue",
             width = 12,
             h3("Landings per unit effort", style="color:#1A5276;"),
-            echarts4rOutput(ns("clydeLPUEPlot")),
+            echarts4rOutput(ns("colonsayLPUEPlot")),
             HTML('<a href="#top">Back to top</a>')
         )
       )
     ),
     fluidRow(
              div(id = "csay-effort",
-                 leafletOutput(ns("csayEffortMap"),
+                 leafletOutput(ns("colonsayEffortMap"),
                               height = 600),
                  HTML('<a href="#top">Back to top</a>')
              )
@@ -100,6 +100,38 @@ mod_ColonsayAdvice_server <- function(id){
         e_dims(height='auto',width='auto')
 
     })
+
+    output$colonsayLPUEPlot <- renderEcharts4r({
+
+      colonsayLPUE = lpueData %>% filter(trial_area == "Colonsay")
+
+    colonsayLPUE |>
+      e_charts(activity_date) |>
+      e_scatter(LPUE_kg_hr) |>
+      e_title(subtext = stringr::str_wrap("Figure 2. Landings Per Unit Effort (LPUE) in the Colonsay trial area",60),
+              left = "center",
+              bottom = 0) |>
+      e_grid(containLabel = TRUE) |> # include labels when rescaling plot
+      e_tooltip(trigger="axis", formatter = htmlwidgets::JS(
+        "function(params) {
+        return('<strong>Date:</strong> ' + params[0].name);
+      }"
+      )) |>
+      e_legend(show=FALSE) |>
+      e_theme("wonderland") |>
+      e_dims(height = 'auto', width = 'auto') |>
+      e_y_axis(
+        name = "Landings per Unit Effort (Kg/hr)",
+        nameLocation = "center",
+        nameGap = 40
+      ) |>
+      e_x_axis(
+        name = "Date",
+        nameLocation = "center",
+        nameGap = 30
+      )
+    })
+    
   })
 }
 
