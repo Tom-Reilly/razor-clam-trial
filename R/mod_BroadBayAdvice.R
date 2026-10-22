@@ -39,25 +39,33 @@ mod_BroadBayAdvice_ui <- function(id){
              div(class="advice-box",
                  includeHTML(app_sys("broadbayAdvice.html"))))
     ),
-    column(width = 6,
-           div(class="advice-box",
-               id = "bbay-landings",
-               width = 12,
-               echarts4rOutput(ns("broadbayLanPlot"))
-           ),
-           div(class="advice-box",
-               id = "bbay-lpue",
-               width = 12,
-               echarts4rOutput(ns("bbayLPUEPlot"))
-               #img(src="img/annual_lpue_Firth of Clyde.jpeg", class="img-col")
-           )
+    fluidRow(
+      column(width = 12,
+        div(class="advice-box",
+            id = "bbay-landings",
+            width = 12,
+            h3("Total landings by year", style="color:#1A5276;"),
+            echarts4rOutput(ns("broadbayLanPlot")),
+            HTML('<a href="#top">Back to top</a>')
+        )
+      )
     ),
-    column(width = 6,
-           div(class="advice-box",
-               id = "bbay-effort",
-               width = 12,
-               img(src="img/b_bay_Trial Year 7.png", class="img-col")
-           )
+    fluidRow(
+      column(width = 12,
+        div(class="advice-box",
+            id = "bbay-lpue",
+            width = 12,
+            h3("Landings per unit effort", style="color:#1A5276"),
+            echarts4rOutput(ns("bbayLPUEPlot")),
+            HTML('<a href="#top">Back to top</a>')
+        )
+      )
+    ),
+    fluidRow(
+      div(id = "bbay-effort",
+          leafletOutput(ns("bbayEffortMap")),
+          HTML('<a href="#top">Back to top</a>')
+      )
     )
   )
 }
@@ -121,7 +129,6 @@ mod_BroadBayAdvice_server <- function(id){
           nameLocation = "center",
           nameGap = 30
         )
-
     })
 
   })
