@@ -40,28 +40,31 @@ mod_WigtownBayAdvice_ui <- function(id){
                  includeHTML(app_sys("wigtownbayAdvice.html"))))
     ),
     fluidRow(
-    column(width = 6,
-           div(class="advice-box",
-               id = "landings",
-               width = 12,
-               echarts4rOutput(ns("wigtownbayLanPlot"))
+      column(width = 12,
+        div(class="advice-box",
+            id = "wig-landings",
+            width = 12,
+            h3("Total landings by year", style="color:#1A5276;"),
+            echarts4rOutput(ns("wigtownLanPlot")),
+            HTML('<a href="#top">Back to top</a>')
            ),
-           div(class="advice-box",
-               id = "lpue",
-               width = 12,
-               #div(class = "advice-box",
-               #    width = 12,
-               #     echarts4rOutput(ns("clydeLPUEPlot")))
-               #img(src="img/annual_lpue_Firth of Clyde.jpeg", class="img-col")
-           )
+    fluidRow(
+      column(width = 12,
+        div(class="advice-box",
+            id = "wig-lpue",
+            width = 12,
+            h3("Landings per unit effort", style="color:#1A5276;"),
+            echarts4rOutput(ns("wigtownLPUEPlot")),
+            HTML('<a href="#top">Back to top</a>')
+        )
+      )
     ),
-    column(width = 6,
-           div(class="advice-box",
-               id = "effort",
-               width = 12,
-               img(src="img/wig_bay_Trial Year 7.png", class="img-col")
-           )
-    )
+    fluidRow(
+      div(id = "wig-effort",
+             leafletOutput(ns("wigtownEffortMap"),
+                          height = 600),
+             HTML('<a href="#top">Back to top</a>')
+      )
     )
   )
 }
